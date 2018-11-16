@@ -1,0 +1,162 @@
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step label="Your Dimensions" [stepControl]="basicInfoGroup">
+    <form class="example-container" [formGroup]="basicInfoGroup">
+      <mat-form-field>
+        <mat-select
+          #methodSelect
+          formControlName="method"
+          placeholder="BMR Calculation Method"
+        >
+          <mat-option *ngFor="let value of methods" [value]="value">
+            {{ value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field hintLabel="Promise we wont tell anyone...">
+        <input
+          formControlName="age"
+          matInput
+          type="number"
+          placeholder="Age"
+        />
+      </mat-form-field>
+
+      <mat-form-field hintLabel="in centimeters">
+        <input
+          formControlName="height"
+          matInput
+          type="number"
+          placeholder="Height"
+        />
+      </mat-form-field>
+
+      <mat-form-field hintLabel="in kilograms">
+        <input
+          formControlName="weight"
+          matInput
+          type="number"
+          placeholder="Weight"
+        />
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="this.basicInfoGroup.value.method === defaultBmrMethod"
+        hintLabel="as a percentage"
+      >
+        <input
+          formControlName="bodyFatPercentage"
+          matInput
+          type="number"
+          placeholder="Body Fat Percentage"
+        />
+      </mat-form-field>
+
+      <div>
+        <button mat-button matStepperNext mat-raised-button color="primary">
+          Next
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step label="Activity and Preferences" [stepControl]="activityAndPreferenceGroup">
+    <form class="example-container" [formGroup]="activityAndPreferenceGroup">
+      <mat-form-field>
+        <mat-select
+          formControlName="activityLevel"
+          placeholder="Activity Level"
+        >
+          <mat-option
+            *ngFor="let option of activityLevelOptions"
+            [value]="option.value"
+          >
+            {{ option.text }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+          <mat-select
+            formControlName="macroPreference"
+            placeholder="Macro Preference"
+          >
+            <mat-option
+              *ngFor="let breakdown of marcoBreakdowns"
+              [value]="breakdown"
+            >
+              {{ breakdown }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      <div>
+        <button mat-button matStepperPrevious mat-raised-button>Back</button>
+        <button
+          mat-button
+          matStepperNext
+          mat-raised-button
+          color="primary"
+          (click)="calculate()"
+        >
+          Calculate
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>How to get Jacked</ng-template>
+
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image">
+          <mat-icon>show_chart</mat-icon>
+        </div>
+        <mat-card-title>Calories</mat-card-title>
+        <mat-card-subtitle
+          >How you need to adjust your calories to achieve your
+          goals</mat-card-subtitle
+        >
+      </mat-card-header>
+      <mat-card-content>
+        <mat-chip-list>
+          <mat-chip>
+            <mat-icon>linear_scale</mat-icon>
+            Maintain on {{ tdee | number: "1.0-0" }} calories
+          </mat-chip>
+          <mat-chip>
+            <mat-icon>arrow_upward</mat-icon>
+            Gain Weight on {{ tdeeGainWeight | number: "1.0-0" }} calories
+          </mat-chip>
+          <mat-chip>
+            <mat-icon>arrow_downward</mat-icon>
+            Lose Weight on {{ tdeeLoseWeight | number: "1.0-0" }} calories
+          </mat-chip>
+        </mat-chip-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image">
+          <mat-icon>pie_chart</mat-icon>
+        </div>
+        <mat-card-title>Macros</mat-card-title>
+        <mat-card-subtitle
+          >How much should I eat of each food type?</mat-card-subtitle
+        >
+      </mat-card-header>
+      <mat-card-content>
+        <mat-chip-list>
+          <mat-chip>Protein {{ _currentMacroBreakdown.protein }} %</mat-chip>
+          <mat-chip>Carbs {{ _currentMacroBreakdown.carbs }} % </mat-chip>
+          <mat-chip>Fats {{ _currentMacroBreakdown.fats }} %</mat-chip>
+        </mat-chip-list>
+      </mat-card-content>
+    </mat-card>
+
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Again?</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

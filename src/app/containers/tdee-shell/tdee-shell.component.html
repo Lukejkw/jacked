@@ -1,0 +1,13 @@
+<tdee-form
+  [height]="height$ | async"
+  [weight]="weight$ | async"
+  [age]="age$ | async"
+  [gender]="gender$ | async"
+  [activityLevel]="activityLevel$ | async"
+  [bodyFatPercentage]="bodyFatPercentage$ | async"
+  [method]="method$ | async"
+  [tdee]="tdee$ | async"
+  [tdeeLoseWeight]="tdeeLoseWeight$ | async"
+  [tdeeGainWeight]="tdeeGainWeight$ | async"
+  [macroPreference]="macroPreference$ | async"
+  (calculateClicked)="calculate($event)"></tdee-form>
